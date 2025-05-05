@@ -1,0 +1,153 @@
+﻿<UserControl x:Class="UserApp.UI.Controls.MoreInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserApp.UI.Controls"
+             xmlns:vm="clr-namespace:UserApp.Core.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#003366"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#E6F2FF"/>
+            <Setter Property="BorderBrush" Value="#99C2FF"/>
+            <Setter Property="Foreground" Value="#003366"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10 6"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#CCE5FF"/>
+                                <Setter Property="BorderBrush" Value="#66B2FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NavButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="#4DA6FF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+    </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <vm:MoreInfoViewModel/>
+    </UserControl.DataContext>
+
+    <Grid Background="#F5FAFF">
+        <Image Source="/UserApp;component/Resource/Image/background.png" 
+               Stretch="Fill" 
+               Opacity="0.3"
+               Panel.ZIndex="0"/>
+
+        <Border Margin="20" Background="White" CornerRadius="5" BorderBrush="#CCE5FF" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Заголовок -->
+                <TextBlock Grid.Row="0" Text="{Binding CurrentAttraction.Name}" 
+                           FontSize="24" FontWeight="Bold" 
+                           HorizontalAlignment="Center" Margin="10"
+                           Foreground="#003366"/>
+
+                <!-- Галерея изображений -->
+                <Border Grid.Row="1" BorderBrush="#CCE5FF" BorderThickness="0,1" Padding="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Кнопка назад -->
+                        <Button Grid.Column="0" Style="{StaticResource NavButtonStyle}" 
+                                Content="&lt;" VerticalAlignment="Center"
+                                Command="{Binding PreviousImageCommand}"/>
+
+                        <!-- Текущее изображение -->
+                        <Image Grid.Column="1" Source="{Binding CurrentImage.ImagePath}" 
+                               Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               MaxHeight="280"/>
+
+                        <!-- Кнопка вперед -->
+                        <Button Grid.Column="2" Style="{StaticResource NavButtonStyle}" 
+                                Content="&gt;" VerticalAlignment="Center"
+                                Command="{Binding NextImageCommand}"/>
+
+                        <!-- Индикатор изображений -->
+                        <TextBlock Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                   Margin="0,0,0,10" Background="#80000000" Padding="5,2"
+                                   Foreground="White" Text="{Binding ImageCounter}"/>
+                    </Grid>
+                </Border>
+
+                <!-- Информация о месте -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="20,10">
+                    <StackPanel>
+                        <TextBlock Text="{Binding CurrentAttraction.Description}" 
+                                   TextWrapping="Wrap" Margin="0,0,0,15"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Тип:" FontWeight="Bold" Margin="0,0,10,5"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CurrentAttraction.Type}" Margin="0,0,0,5"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Адрес:" FontWeight="Bold" Margin="0,0,10,5"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentAttraction.Address}" Margin="0,0,0,5"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Город:" FontWeight="Bold" Margin="0,0,10,5"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentAttraction.City.Name}" Margin="0,0,0,5"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Часы работы:" FontWeight="Bold" Margin="0,0,10,5"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CurrentAttraction.WorkingHours}" Margin="0,0,0,5"/>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Кнопка закрытия -->
+                <Button Grid.Row="3" Content="Закрыть" HorizontalAlignment="Center" Margin="10"
+                        Width="120" Command="{Binding CloseCommand}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
