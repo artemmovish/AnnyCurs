@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         xmlns:vm="clr-namespace:UserApp.Core.ViewModels"
         xmlns:views="clr-namespace:UserApp.UI.Controls"
-        Title="MainWindow" Height="450" Width="900">
+        Title="MainWindow" Height="650" Width="1000">
 
     <Window.Resources>
         <Style TargetType="TextBlock">
@@ -89,8 +89,17 @@
 
     <Grid>
         <TabControl Margin="0,-25,0,0">
+            <TabItem Header="Login">
+                <views:LoginView DataContext="{Binding LoginVM}"/>
+            </TabItem>
+            <TabItem Header="Register">
+                <views:RegisterView DataContext="{Binding RegisterVM}"/>
+            </TabItem>
             <TabItem Header="Cities">
                 <views:CatalogView DataContext="{Binding CatalogVM}"/>
+            </TabItem>
+            <TabItem Header="MoreInfo">
+                <views:MoreInfoView DataContext="{Binding MoreInfoVM}"/>
             </TabItem>
         </TabControl>
     </Grid>

@@ -1,6 +1,7 @@
 ﻿using AdminApp.Core.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -23,8 +24,8 @@ namespace AdminApp.Core.Models
 
         [Required]
         public UserType Type { get; set; }
-        public virtual ICollection<Attraction> FavoriteAttractions { get; set; } = new List<Attraction>();
+        public virtual List<Attraction> FavoriteAttractions { get; set; } = new List<Attraction>();
 
-        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public virtual List<Review> Reviews { get; set; } = new List<Review>();
     }
 }

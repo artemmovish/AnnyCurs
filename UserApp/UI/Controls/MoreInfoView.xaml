@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:UserApp.UI.Controls"
              xmlns:vm="clr-namespace:UserApp.Core.ViewModels"
              mc:Ignorable="d" 
+             xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
              d:DesignHeight="600" d:DesignWidth="800">
 
     <UserControl.Resources>
@@ -53,11 +54,24 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="16"/>
         </Style>
-    </UserControl.Resources>
 
-    <UserControl.DataContext>
-        <vm:MoreInfoViewModel/>
-    </UserControl.DataContext>
+        <Style x:Key="ReviewItemStyle" TargetType="Border">
+            <Setter Property="Background" Value="#F0F8FF"/>
+            <Setter Property="BorderBrush" Value="#CCE5FF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style x:Key="RatingStarStyle" TargetType="Path">
+            <Setter Property="Fill" Value="#FFD700"/>
+            <Setter Property="Stretch" Value="Uniform"/>
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Margin" Value="0,0,2,0"/>
+        </Style>
+    </UserControl.Resources>
 
     <Grid Background="#F5FAFF">
         <Image Source="/UserApp;component/Resource/Image/background.png" 
@@ -69,84 +83,193 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="*"/>
+                    <!-- Компактная галерея -->
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Заголовок -->
-                <TextBlock Grid.Row="0" Text="{Binding CurrentAttraction.Name}" 
-                           FontSize="24" FontWeight="Bold" 
-                           HorizontalAlignment="Center" Margin="10"
-                           Foreground="#003366"/>
+                <!-- Заголовок и рейтинг -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding CurrentAttraction.Name}" 
+                               FontSize="24" FontWeight="Bold" 
+                               Margin="10" Foreground="#003366"/>
 
-                <!-- Галерея изображений -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <ItemsControl ItemsSource="{Binding RatingStars}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Path Data="M 10,15 L 12,9 L 18,9 L 13,5 L 15,0 L 10,3 L 5,0 L 7,5 L 2,9 L 8,9 Z"
+                                          Style="{StaticResource RatingStarStyle}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Компактная галерея изображений -->
                 <Border Grid.Row="1" BorderBrush="#CCE5FF" BorderThickness="0,1" Padding="10">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Кнопка назад -->
-                        <Button Grid.Column="0" Style="{StaticResource NavButtonStyle}" 
-                                Content="&lt;" VerticalAlignment="Center"
-                                Command="{Binding PreviousImageCommand}"/>
-
-                        <!-- Текущее изображение -->
-                        <Image Grid.Column="1" Source="{Binding CurrentImage.ImagePath}" 
-                               Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"
-                               MaxHeight="280"/>
-
-                        <!-- Кнопка вперед -->
-                        <Button Grid.Column="2" Style="{StaticResource NavButtonStyle}" 
-                                Content="&gt;" VerticalAlignment="Center"
-                                Command="{Binding NextImageCommand}"/>
-
-                        <!-- Индикатор изображений -->
-                        <TextBlock Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                                   Margin="0,0,0,10" Background="#80000000" Padding="5,2"
-                                   Foreground="White" Text="{Binding ImageCounter}"/>
-                    </Grid>
-                </Border>
-
-                <!-- Информация о месте -->
-                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="20,10">
-                    <StackPanel>
-                        <TextBlock Text="{Binding CurrentAttraction.Description}" 
-                                   TextWrapping="Wrap" Margin="0,0,0,15"/>
-
-                        <Grid>
+                        <wv2:WebView2 x:Name="browser" Grid.Column="1" Visibility="Collapsed" Margin="0,0,0,0"
+                                      Source="{Binding CurrentAttraction.MapLink}"/>
+                        
+                        <Grid x:Name="ImageGrid" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Тип:" FontWeight="Bold" Margin="0,0,10,5"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CurrentAttraction.Type}" Margin="0,0,0,5"/>
+                            <Button Grid.Column="0" Style="{StaticResource NavButtonStyle}" 
+                Content="&lt;" VerticalAlignment="Center"
+                Command="{Binding PreviousImageCommand}"/>
 
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Адрес:" FontWeight="Bold" Margin="0,0,10,5"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentAttraction.Address}" Margin="0,0,0,5"/>
+                            <Image Grid.Column="1" Source="{Binding CurrentImage.ImagePath}" 
+               Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"
+               MaxHeight="200"/>
 
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Город:" FontWeight="Bold" Margin="0,0,10,5"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentAttraction.City.Name}" Margin="0,0,0,5"/>
+                            <Button Grid.Column="2" Style="{StaticResource NavButtonStyle}" 
+                Content="&gt;" VerticalAlignment="Center"
+                Command="{Binding NextImageCommand}"/>
 
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Часы работы:" FontWeight="Bold" Margin="0,0,10,5"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CurrentAttraction.WorkingHours}" Margin="0,0,0,5"/>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                   Margin="0,0,0,10" Background="#80000000" Padding="5,2"
+                   Foreground="White" Text="{Binding ImageCounter}"/>
                         </Grid>
-                    </StackPanel>
-                </ScrollViewer>
+                    </Grid>
+                </Border>
+
+                <!-- Основной контент с описанием и отзывами -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.45*"/>
+                        <ColumnDefinition Width="0.55*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Описание и детали -->
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="15">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Тип:" FontWeight="Bold" Margin="0,0,10,8"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CurrentAttraction.Type}" Margin="0,0,0,8"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Город:" FontWeight="Bold" Margin="0,0,10,8"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentAttraction.City.Name}" Margin="0,0,0,8"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Описание:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentAttraction.Description}" 
+                                           TextWrapping="Wrap" Margin="0,0,0,5"/>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Отзывы -->
+                    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Padding="15,10">
+                        <StackPanel>
+                            <TextBlock Text="Отзывы" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                            <!-- Форма добавления отзыва -->
+                            <Border Style="{StaticResource ReviewItemStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Оставить отзыв" FontWeight="Bold" Margin="0,0,0,8"/>
+                                    <TextBox Text="{Binding NewReviewText}" 
+                                             AcceptsReturn="True" 
+                                             MinHeight="60" 
+                                             MaxHeight="100"
+                                             VerticalScrollBarVisibility="Auto"
+                                             Margin="0,0,0,8"/>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="Оценка:" FontWeight="Bold" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <ComboBox ItemsSource="{Binding NewReviewRatingList}" SelectedItem="{Binding NewReviewRating}" Width="60">
+                                            
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <Button Content="Отправить" 
+                                            HorizontalAlignment="Right"
+                                            Command="{Binding SubmitReviewCommand}"
+                                            Width="120"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Список отзывов -->
+                            <ItemsControl ItemsSource="{Binding CurrentAttraction.Reviews}" Margin="0,10,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource ReviewItemStyle}" Margin="0,0,0,8">
+                                            <StackPanel>
+                                                <DockPanel LastChildFill="False">
+                                                    <TextBlock Text="{Binding Author.Username}" 
+                                                               DockPanel.Dock="Left" 
+                                                               FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding CreatedDate, StringFormat='dd.MM.yyyy'}" 
+                                                               DockPanel.Dock="Right" 
+                                                               Foreground="#666666"/>
+                                                </DockPanel>
+
+                                                <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                                    <ItemsControl ItemsSource="{Binding RatingStars}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Path Data="M 10,15 L 12,9 L 18,9 L 13,5 L 15,0 L 10,3 L 5,0 L 7,5 L 2,9 L 8,9 Z"
+                                                                      Style="{StaticResource RatingStarStyle}"/>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+
+                                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
 
                 <!-- Кнопка закрытия -->
-                <Button Grid.Row="3" Content="Закрыть" HorizontalAlignment="Center" Margin="10"
-                        Width="120" Command="{Binding CloseCommand}"/>
+                <Grid Grid.Row="3" HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Content="Закрыть" 
+        HorizontalAlignment="Center" 
+        Margin="10" Width="120"
+        Click="Button_Click"/>
+                    <Button Grid.Column="1" Content="Открыть карту" 
+        HorizontalAlignment="Center" 
+        Margin="10" Width="120"
+        Click="Button_Map_Click"/>
+                </Grid>
+                
             </Grid>
         </Border>
     </Grid>

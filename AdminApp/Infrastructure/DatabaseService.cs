@@ -178,13 +178,11 @@ namespace AdminApp.Infrastructure
                 .Where(r => r.Attraction.Id == attractionId)
                 .Include(r => r.Author)
                 .ToList();
-
         public static void AddReview(Review review)
         {
             _db.Reviews.Add(review);
             _db.SaveChanges();
         }
-
         public static void DeleteReview(int id)
         {
             var review = _db.Reviews.FirstOrDefault(r => r.Id == id);

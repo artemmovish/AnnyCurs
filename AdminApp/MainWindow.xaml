@@ -7,23 +7,87 @@
         mc:Ignorable="d"
         xmlns:viewModels="clr-namespace:AdminApp.Core.ViewModels"
         xmlns:views="clr-namespace:AdminApp.UI.Controls"
-        Title="MainWindow" Height="700" Width="1100">
+        Title="MainWindow" Height="700" Width="1100"
+        Background="#FAFCFF">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#003366"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#E6F2FF"/>
+            <Setter Property="BorderBrush" Value="#99C2FF"/>
+            <Setter Property="Foreground" Value="#003366"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8 4"/>
+            <Setter Property="Margin" Value="0 5 0 0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#CCE5FF"/>
+                    <Setter Property="BorderBrush" Value="#66B2FF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ListView">
+            <Setter Property="BorderBrush" Value="#99C2FF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#FAFCFF"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="BorderBrush" Value="#99C2FF"/>
+            <Setter Property="Background" Value="#FAFCFF"/>
+            <Setter Property="Padding" Value="4"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="BorderBrush" Value="#99C2FF"/>
+            <Setter Property="Background" Value="#FAFCFF"/>
+            <Setter Property="Padding" Value="4"/>
+        </Style>
+
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="#FAFCFF"/>
+            <Setter Property="BorderBrush" Value="#99C2FF"/>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="Background" Value="#E6F2FF"/>
+            <Setter Property="BorderBrush" Value="#99C2FF"/>
+            <Setter Property="Foreground" Value="#003366"/>
+            <Setter Property="Padding" Value="10 5"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#CCE5FF"/>
+                    <Setter Property="BorderBrush" Value="#66B2FF"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#CCE5FF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
     <Window.DataContext>
         <viewModels:MainViewModel/>
     </Window.DataContext>
 
     <Grid>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Header="Cities">
+            <TabItem Header="Городы">
                 <views:CitiesView DataContext="{Binding CitiesViewModel}"/>
             </TabItem>
-            <TabItem Header="Attractions">
+            <TabItem Header="Достопримечательности">
                 <views:AttractionsView DataContext="{Binding AttractionsViewModel}"/>
             </TabItem>
-            <TabItem Header="Users">
+            <TabItem Header="Пользователи">
                 <views:UsersView DataContext="{Binding UsersViewModel}"/>
             </TabItem>
-            <TabItem Header="Reviews">
+            <TabItem Header="Отзывы">
                 <views:ReviewsView DataContext="{Binding ReviewsViewModel}"/>
             </TabItem>
         </TabControl>

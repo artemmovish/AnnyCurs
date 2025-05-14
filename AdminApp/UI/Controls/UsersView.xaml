@@ -63,15 +63,15 @@
         <Border Grid.Column="0" Margin="10" Background="White" CornerRadius="5" 
                 BorderBrush="#CCE5FF" BorderThickness="1" Padding="10">
             <StackPanel>
-                <TextBlock Text="Users" FontSize="18" FontWeight="Bold" Margin="0 0 0 10"/>
+                <TextBlock Text="Пользователи" FontSize="18" FontWeight="Bold" Margin="0 0 0 10"/>
 
                 <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="2">
                     <ListView ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="50"/>
-                                <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}" Width="150"/>
-                                <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" Width="100"/>
+                                <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Username}" Width="150"/>
+                                <GridViewColumn Header="Тип" DisplayMemberBinding="{Binding Type}" Width="100"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -79,7 +79,7 @@
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10 0 0">
                     <!--<Button Content="Add New" Command="{Binding AddUserCommand}" Width="100" Margin="0 0 10 0"/>-->
-                    <Button Content="Delete User" Command="{Binding DeleteUserCommand}" Width="120"/>
+                    <Button Content="Удалить пользователя" Command="{Binding DeleteUserCommand}" Width="160"/>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -89,7 +89,7 @@
                 BorderBrush="#CCE5FF" BorderThickness="1" Padding="10">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <TextBlock Text="User Details" FontSize="18" FontWeight="Bold" Margin="0 0 0 10"/>
+                    <TextBlock Text="Детали" FontSize="18" FontWeight="Bold" Margin="0 0 0 10"/>
 
                     <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="10" Margin="0 0 0 10">
                         <Grid>
@@ -108,52 +108,52 @@
                             <TextBox Text="{Binding SelectedUser.Username, UpdateSourceTrigger=PropertyChanged}" 
                                      Grid.Row="0" Grid.Column="1" Margin="0 0 0 10"/>
 
-                            <TextBlock Text="Password:" Grid.Row="1" Grid.Column="0" Margin="0 0 10 10"/>
+                            <TextBlock Text="Пароль:" Grid.Row="1" Grid.Column="0" Margin="0 0 10 10"/>
                             <PasswordBox x:Name="PasswordBox" Grid.Row="1" Grid.Column="1" Margin="0 0 0 10"/>
 
-                            <TextBlock Text="Type:" Grid.Row="2" Grid.Column="0" Margin="0 0 10 10"/>
+                            <TextBlock Text="Тип:" Grid.Row="2" Grid.Column="0" Margin="0 0 10 10"/>
                             <ComboBox ItemsSource="{Binding UserTypes}" 
                                       SelectedItem="{Binding SelectedUser.Type}"
                                       Grid.Row="2" Grid.Column="1" Margin="0 0 0 10"/>
 
-                            <Button Content="Save Changes" Command="{Binding SaveUserCommand}" 
+                            <Button Content="Сохранить" Command="{Binding SaveUserCommand}" 
                                     Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Right" Width="120"
                                     Background="#4DA6FF" Foreground="White"/>
                         </Grid>
                     </Border>
 
-                    <!-- Favorite Attractions -->
+                    <!-- Favorite Attractions --><!--
                     <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="10" Margin="0 0 0 10">
                         <StackPanel>
-                            <TextBlock Text="Favorite Attractions" FontSize="16" FontWeight="Bold" Margin="0 0 0 10"/>
+                            <TextBlock Text="Любимые" FontSize="16" FontWeight="Bold" Margin="0 0 0 10"/>
 
                             <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="2">
                                 <ListView ItemsSource="{Binding SelectedUser.FavoriteAttractions}">
                                     <ListView.View>
                                         <GridView>
                                             <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="50"/>
-                                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200"/>
-                                            <GridViewColumn Header="City" DisplayMemberBinding="{Binding City.Name}" Width="150"/>
+                                            <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}" Width="200"/>
+                                            <GridViewColumn Header="Город" DisplayMemberBinding="{Binding City.Name}" Width="150"/>
                                         </GridView>
                                     </ListView.View>
                                 </ListView>
                             </Border>
                         </StackPanel>
-                    </Border>
+                    </Border>-->
 
                     <!-- User Reviews -->
                     <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="10">
                         <StackPanel>
-                            <TextBlock Text="User Reviews" FontSize="16" FontWeight="Bold" Margin="0 0 0 10"/>
+                            <TextBlock Text="Отзовы" FontSize="16" FontWeight="Bold" Margin="0 0 0 10"/>
 
                             <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="2">
                                 <ListView ItemsSource="{Binding SelectedUser.Reviews}">
                                     <ListView.View>
                                         <GridView>
-                                            <GridViewColumn Header="Attraction" DisplayMemberBinding="{Binding Attraction.Name}" Width="200"/>
-                                            <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding Rating}" Width="60"/>
-                                            <GridViewColumn Header="Date" DisplayMemberBinding="{Binding CreatedDate, StringFormat=d}" Width="100"/>
-                                            <GridViewColumn Header="Text" DisplayMemberBinding="{Binding Text}" Width="300"/>
+                                            <GridViewColumn Header="Достопримечательнось" DisplayMemberBinding="{Binding Attraction.Name}" Width="200"/>
+                                            <GridViewColumn Header="Рейтинг" DisplayMemberBinding="{Binding Rating}" Width="60"/>
+                                            <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding CreatedDate, StringFormat=d}" Width="100"/>
+                                            <GridViewColumn Header="Текст" DisplayMemberBinding="{Binding Text}" Width="300"/>
                                         </GridView>
                                     </ListView.View>
                                 </ListView>

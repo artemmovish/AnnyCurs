@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using UserApp.Core.ViewModels.Total;
 
 namespace UserApp.Core.ViewModels
 {
@@ -115,6 +116,7 @@ namespace UserApp.Core.ViewModels
         [RelayCommand]
         void Type(AttractionType type)
         {
+            FiltrType = default;
             FiltrType = type;
             ApplyFilters();
         }
@@ -126,9 +128,9 @@ namespace UserApp.Core.ViewModels
         }
 
         [RelayCommand]
-        void ShowDetails()
+        void ShowDetails(Attraction attraction)
         {
-            MessageBox.Show("Show");
+            SingletonViewModelHolder.Instance.SetAttraction(attraction);
         }
         [RelayCommand]
         void RemoveFilter(string item)

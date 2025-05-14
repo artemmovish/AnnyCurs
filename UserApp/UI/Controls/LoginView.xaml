@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="UserApp.UI.Controls.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#003366"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#F0F8FF"/>
+            <Setter Property="BorderBrush" Value="#99C2FF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#003366"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <Style TargetType="PasswordBox">
+            <Setter Property="Background" Value="#F0F8FF"/>
+            <Setter Property="BorderBrush" Value="#99C2FF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#003366"/>
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#4DA6FF"/>
+            <Setter Property="BorderBrush" Value="#66B2FF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10 8"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#66B2FF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#3399FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#F5FAFF">
+        <Image Source="/UserApp;component/Resource/Image/background.png" 
+               Stretch="UniformToFill" 
+               Opacity="0.2"/>
+
+        <Border Width="350" Padding="30" Background="White" 
+                CornerRadius="10" BorderBrush="#CCE5FF" BorderThickness="1"
+                VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="Вход в систему" 
+                           FontSize="22" FontWeight="Bold" 
+                           HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                <TextBlock Text="Email или имя пользователя" FontWeight="SemiBold"/>
+                <TextBox x:Name="UsernameTextBox" 
+                         Text="{Binding Username}"/>
+
+                <TextBlock Text="Пароль" FontWeight="SemiBold"/>
+                <PasswordBox x:Name="PasswordBox"
+             PasswordChanged="PasswordBox_PasswordChanged"/>
+
+
+                <Button Content="Войти" 
+                        Click="ToCatalog_Click"
+                        Command="{Binding LoginCommand}"
+                        Height="40"/>
+
+                <TextBlock HorizontalAlignment="Center" Margin="0,15,0,0">
+                    <Hyperlink Command="{Binding NavigateToRegisterCommand}" 
+                               Click="ToReg_Click"
+                               Foreground="#4DA6FF">
+                        Нет аккаунта? Зарегистрируйтесь
+                    </Hyperlink>
+                </TextBlock>
+
+                <TextBlock Text="{Binding ErrorMessage}" 
+                           Foreground="Red" 
+                           TextWrapping="Wrap"
+                           Margin="0,15,0,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,68 +1,115 @@
 ﻿using AdminApp.Core.Models;
+using AdminApp.Core.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
+using AdminApp.Infrastructure;
+using UserApp.Core.ViewModels.Total;
 
-namespace UserApp.Core.ViewModels
+public partial class MoreInfoViewModel : ObservableObject
 {
-    public partial class MoreInfoViewModel : ObservableObject
+    // Текущий авторизованный пользователь (в реальном приложении получать из системы аутентификации)
+    private User _currentUser => SingletonViewModelHolder.Instance.User;
+
+    [ObservableProperty]
+    private Attraction _currentAttraction;
+
+    [ObservableProperty]
+    private AttractionImage _currentImage;
+
+    [ObservableProperty]
+    private string _newReviewText;
+
+    [ObservableProperty]
+    private int _newReviewRating = 5;
+
+    public ObservableCollection<int> NewReviewRatingList { get; } = new ObservableCollection<int>()
     {
-        [ObservableProperty]
-        private Attraction currentAttraction;
+        1, 2, 3, 4, 5
+    };
 
-        [ObservableProperty]
-        private AttractionImage currentImage;
 
-        private int _currentImageIndex;
+    private int _currentImageIndex;
 
-        public string ImageCounter =>
-            CurrentAttraction?.Images != null ?
-            $"{_currentImageIndex + 1}/{CurrentAttraction.Images.Count}" :
-            "0/0";
+    public List<int> RatingStars =>
+        Enumerable.Repeat(1, (int)Math.Round(CurrentAttraction?.Rating ?? 0)).ToList();
 
-        public void Initialize(Attraction attraction)
+    public string ImageCounter =>
+        CurrentAttraction?.Images != null ?
+        $"{_currentImageIndex + 1}/{CurrentAttraction.Images.Count}" :
+        "0/0";
+
+    public void Initialize(Attraction attraction)
+    {
+        CurrentAttraction = attraction;
+
+        if (attraction?.Images?.Any() == true)
         {
-            CurrentAttraction = attraction;
-            if (attraction?.Images?.Any() == true)
-            {
-                CurrentImage = attraction.Images.First();
-                _currentImageIndex = 0;
-                OnPropertyChanged(nameof(ImageCounter));
-            }
+            CurrentImage = attraction.Images.First();
+            _currentImageIndex = 0;
         }
+        OnPropertyChanged(nameof(ImageCounter));
+        OnPropertyChanged(nameof(RatingStars));
+    }
 
-        [RelayCommand]
-        private void NextImage()
+    [RelayCommand]
+    private void NextImage()
+    {
+        if (CurrentAttraction?.Images != null &&
+            _currentImageIndex < CurrentAttraction.Images.Count - 1)
         {
-            if (CurrentAttraction?.Images != null &&
-                _currentImageIndex < CurrentAttraction.Images.Count - 1)
-            {
-                _currentImageIndex++;
-                CurrentImage = CurrentAttraction.Images[_currentImageIndex];
-                OnPropertyChanged(nameof(ImageCounter));
-            }
+            _currentImageIndex++;
+            CurrentImage = CurrentAttraction.Images[_currentImageIndex];
+            OnPropertyChanged(nameof(ImageCounter));
         }
-        
-        [RelayCommand]
-        private void PreviousImage()
-        {
-            if (CurrentAttraction?.Images != null && _currentImageIndex > 0)
-            {
-                _currentImageIndex--;
-                CurrentImage = CurrentAttraction.Images[_currentImageIndex];
-                OnPropertyChanged(nameof(ImageCounter));
-            }
-        }
+    }
 
-        [RelayCommand]
-        private void Close()
+    [RelayCommand]
+    private void PreviousImage()
+    {
+        if (CurrentAttraction?.Images != null && _currentImageIndex > 0)
         {
-            // Закрытие окна или возврат назад
-            // Например, через Messenger или сервис навигации
+            _currentImageIndex--;
+            CurrentImage = CurrentAttraction.Images[_currentImageIndex];
+            OnPropertyChanged(nameof(ImageCounter));
         }
+    }
+
+    [RelayCommand]
+    private void SubmitReview()
+    {
+        if (_currentUser == null) return;
+        if (string.IsNullOrWhiteSpace(NewReviewText)) return;
+
+        var newReview = new Review
+        {
+            Text = NewReviewText,
+            Rating = Convert.ToInt32(NewReviewRating),
+            Author = _currentUser,
+            Attraction = CurrentAttraction,
+            CreatedDate = DateTime.Now
+        };
+
+        // Добавляем в локальное хранилище
+        DatabaseService.AddReview(newReview);
+
+        // Добавляем в коллекцию отзывов достопримечательности
+        CurrentAttraction.Reviews.Add(newReview);
+
+        // Сбрасываем форму
+        NewReviewText = string.Empty;
+        NewReviewRating = 5;
+
+        // Обновляем отображение рейтинга
+        OnPropertyChanged(nameof(RatingStars));
+    }
+
+    [RelayCommand]
+    private void Close()
+    {
+        // В реальном приложении здесь будет закрытие окна
+        // Например: App.NavigationService.GoBack();
     }
 }

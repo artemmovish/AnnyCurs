@@ -87,8 +87,8 @@
 
     <Grid Background="#F5FAFF">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="0.13*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -98,7 +98,7 @@
     Panel.ZIndex="0"
     Grid.RowSpan="3" />
         <!-- Панель поиска Background="#E6F2FF" -->
-        <Border Grid.Row="0" Background="Transparent" Padding="10">
+        <Border Grid.Row="0" Background="Transparent" Padding="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
@@ -124,12 +124,13 @@ StaysOpen="False" Placement="Bottom">
                                 <DataTemplate>
                                     <!-- Передаём выбранный тип в команду -->
                                     <Button Command="{Binding DataContext.TypeCommand, 
-                     RelativeSource={RelativeSource AncestorType=Window}}"
+         RelativeSource={RelativeSource AncestorType=ListView}}"
+                                            Content="{Binding}"
+                                            
                      CommandParameter="{Binding}"
                      Background="Transparent" 
                      BorderThickness="0"
                      HorizontalContentAlignment="Left">
-                                        <TextBlock Text="{Binding}" Padding="8 4"/>
                                     </Button>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -148,7 +149,7 @@ StaysOpen="False" Placement="Bottom">
                                 <DataTemplate>
                                     <!-- Передаём выбранный тип в команду -->
                                     <Button Command="{Binding DataContext.CityCommand, 
-                     RelativeSource={RelativeSource AncestorType=Window}}"
+                     RelativeSource={RelativeSource AncestorType=ListView}}"
                      CommandParameter="{Binding}"
                      Background="Transparent" 
                      BorderThickness="0"
@@ -179,15 +180,15 @@ StaysOpen="False" Placement="Bottom">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border CornerRadius="3" Background="#CCE5FF" Margin="5" Padding="5,2" BorderBrush="#99C2FF" BorderThickness="1">
-                                <DockPanel>
-                                    <TextBlock Text="{Binding}" DockPanel.Dock="Left" Margin="0"/>
-                                    <Button Content="×" DockPanel.Dock="Right" FontWeight="Bold" 
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+                                    <Button Content="×" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" 
                                  Background="Transparent" BorderThickness="0" 
-                                 Padding="0" FontSize="10" Margin="5,0"
+                                 Padding="0" Margin="5,0" FontSize="16"
                                  Command="{Binding DataContext.RemoveFilterCommand, 
                                           RelativeSource={RelativeSource AncestorType=ListView}}"
                                  CommandParameter="{Binding}"/>
-                                </DockPanel>
+                                </StackPanel>
                             </Border>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -233,6 +234,7 @@ StaysOpen="False" Placement="Bottom">
                                     <Button Grid.Row="2" Content="Подробнее" Margin="5" Padding="15" Height="20" Width="90"
                                  HorizontalAlignment="Center" Background="#4DA6FF" 
                                  Foreground="White" BorderThickness="0"
+                                 Click="SwitchToMoreInfoTab_Click"
                                  Command="{Binding DataContext.ShowDetailsCommand, 
                                           RelativeSource={RelativeSource AncestorType=ListView}}"
                                  CommandParameter="{Binding}"/>

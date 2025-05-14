@@ -50,9 +50,9 @@
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="50"/>
-                            <GridViewColumn Header="Attraction" DisplayMemberBinding="{Binding Attraction.Name}" Width="200"/>
-                            <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Author.Username}" Width="150"/>
-                            <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding Rating}" Width="60">
+                            <GridViewColumn Header="Достопримечательность" DisplayMemberBinding="{Binding Attraction.Name}" Width="200"/>
+                            <GridViewColumn Header="Автор" DisplayMemberBinding="{Binding Author.Username}" Width="150"/>
+                            <GridViewColumn Header="Рейтинг" DisplayMemberBinding="{Binding Rating}" Width="60">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -62,8 +62,8 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Header="Date" DisplayMemberBinding="{Binding CreatedDate, StringFormat=d}" Width="100"/>
-                            <GridViewColumn Header="Text" DisplayMemberBinding="{Binding Text}" Width="300"/>
+                            <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding CreatedDate, StringFormat=d}" Width="100"/>
+                            <GridViewColumn Header="Текст" DisplayMemberBinding="{Binding Text}" Width="300"/>
                         </GridView>
                     </ListView.View>
                 </ListView>

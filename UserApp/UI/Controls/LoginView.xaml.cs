@@ -12,42 +12,54 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UserApp.Core.ViewModels.Total;
 
 namespace UserApp.UI.Controls
 {
     /// <summary>
-    /// Логика взаимодействия для MoreInfoView.xaml
+    /// Логика взаимодействия для LoginView.xaml
     /// </summary>
-    public partial class MoreInfoView : UserControl
+    public partial class LoginView : UserControl
     {
-        public MoreInfoView()
+        public LoginView()
         {
             InitializeComponent();
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginViewModel viewModel)
+            {
+                viewModel.PasswordHash = ((PasswordBox)sender).Password;
+            }
+        }
+
+        private void ToReg_Click(object sender, RoutedEventArgs e)
         {
             // Получаем родительский TabControl (если кнопка внутри CatalogView)
             var tabControl = FindParent<TabControl>(this);
             if (tabControl != null)
             {
-                tabControl.SelectedIndex = 2; 
+                tabControl.SelectedIndex = 1;
             }
         }
-        private void Button_Map_Click(object sender, RoutedEventArgs e)
+        private async void ToCatalog_Click(object sender, RoutedEventArgs e)
         {
-            if (browser.Visibility == Visibility.Visible)
+            await Task.Delay(2000);
+
+            if (SingletonViewModelHolder.Instance.User == null) return;
+
+            var tabControl = FindParent<TabControl>(this);
+            if (tabControl != null)
             {
-                // Если браузер видим, скрываем его и восстанавливаем Grid
-                Grid.SetColumnSpan(ImageGrid, 2); // Или какое значение было изначально
-                browser.Visibility = Visibility.Collapsed;
+                tabControl.SelectedIndex = 2;
+                return;
             }
-            else
-            {
-                // Если браузер скрыт, показываем его и изменяем Grid
-                Grid.SetColumnSpan(ImageGrid, 1);
-                browser.Visibility = Visibility.Visible;
-            }
+
+            MessageBox.Show("Неверные данные");
+
         }
+
         // Вспомогательный метод для поиска родительского TabControl
         private static T FindParent<T>(DependencyObject child) where T : DependencyObject
         {
@@ -57,7 +69,6 @@ namespace UserApp.UI.Controls
             }
             return child as T;
         }
-
 
     }
 }

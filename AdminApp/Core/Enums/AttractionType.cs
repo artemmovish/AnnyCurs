@@ -8,6 +8,7 @@ namespace AdminApp.Core.Enums
 {
     public enum AttractionType
     {
+        Все,
         Музей,
         Парк,
         Монумент,

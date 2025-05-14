@@ -57,24 +57,24 @@
         <Border Grid.Column="0" Margin="10" Background="White" CornerRadius="5" 
                 BorderBrush="#CCE5FF" BorderThickness="1" Padding="10">
             <StackPanel>
-                <TextBlock Text="Attractions" FontSize="18" FontWeight="Bold" Margin="0 0 0 10"/>
+                <TextBlock Text="Достопримечательности" FontSize="18" FontWeight="Bold" Margin="0 0 0 10"/>
 
                 <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="2">
                     <ListView ItemsSource="{Binding Attractions}" SelectedItem="{Binding SelectedAttraction}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="50"/>
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="150"/>
-                                <GridViewColumn Header="City" DisplayMemberBinding="{Binding City.Name}" Width="100"/>
-                                <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding Rating, StringFormat=N1}" Width="60"/>
+                                <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}" Width="150"/>
+                                <GridViewColumn Header="Город" DisplayMemberBinding="{Binding City.Name}" Width="100"/>
+                                <GridViewColumn Header="Рейтинг" DisplayMemberBinding="{Binding Rating, StringFormat=N1}" Width="60"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
                 </Border>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10 0 0">
-                    <Button Content="Add New" Command="{Binding AddAttractionCommand}" Width="100" Margin="0 0 10 0"/>
-                    <Button Content="Delete" Command="{Binding DeleteAttractionCommand}" Width="100"/>
+                    <Button Content="Добавить" Command="{Binding AddAttractionCommand}" Width="100" Margin="0 0 10 0"/>
+                    <Button Content="Удалить" Command="{Binding DeleteAttractionCommand}" Width="100" Margin="0 0 10 0"/>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -84,7 +84,7 @@
                 BorderBrush="#CCE5FF" BorderThickness="1" Padding="10">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <TextBlock Text="Attraction Details" FontSize="18" FontWeight="Bold" Margin="0 0 0 10"/>
+                    <TextBlock Text="Детали" FontSize="18" FontWeight="Bold" Margin="10 0 0 10"/>
 
                     <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="10" Margin="0 0 0 10">
                         <Grid>
@@ -101,25 +101,25 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" Margin="0 0 10 10"/>
+                            <TextBlock Text="Название:" Grid.Row="0" Grid.Column="0" Margin="0 0 10 10"/>
                             <TextBox Text="{Binding SelectedAttraction.Name, UpdateSourceTrigger=PropertyChanged}" 
                                      Grid.Row="0" Grid.Column="1" Margin="0 0 0 10"/>
 
-                            <TextBlock Text="City:" Grid.Row="1" Grid.Column="0" Margin="0 0 10 10"/>
+                            <TextBlock Text="Город:" Grid.Row="1" Grid.Column="0" Margin="0 0 10 10"/>
                             <ComboBox ItemsSource="{Binding Cities}" DisplayMemberPath="Name" 
                                       SelectedItem="{Binding SelectedAttraction.City}"
                                       Grid.Row="1" Grid.Column="1" Margin="0 0 0 10"/>
 
-                            <TextBlock Text="Type:" Grid.Row="2" Grid.Column="0" Margin="0 0 10 10"/>
+                            <TextBlock Text="Тип:" Grid.Row="2" Grid.Column="0" Margin="0 0 10 10"/>
                             <ComboBox ItemsSource="{Binding AttractionTypes}" 
                                       SelectedItem="{Binding SelectedAttraction.Type}"
                                       Grid.Row="2" Grid.Column="1" Margin="0 0 0 10"/>
 
-                            <TextBlock Text="Map Link:" Grid.Row="3" Grid.Column="0" Margin="0 0 10 10"/>
+                            <TextBlock Text="Карта:" Grid.Row="3" Grid.Column="0" Margin="0 0 10 10"/>
                             <TextBox Text="{Binding SelectedAttraction.MapLink, UpdateSourceTrigger=PropertyChanged}" 
                                      Grid.Row="3" Grid.Column="1" Margin="0 0 0 10"/>
 
-                            <TextBlock Text="Description:" Grid.Row="4" Grid.Column="0" Margin="0 0 10 10"/>
+                            <TextBlock Text="Описание:" Grid.Row="4" Grid.Column="0" Margin="0 0 10 10"/>
                             <TextBox Text="{Binding SelectedAttraction.Description, UpdateSourceTrigger=PropertyChanged}" 
                                      AcceptsReturn="True" TextWrapping="Wrap" Height="80"
                                      Grid.Row="4" Grid.Column="1" Margin="0 0 0 10"/>
@@ -133,7 +133,7 @@
                     <!-- Images Section -->
                     <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="10" Margin="0 0 0 10">
                         <StackPanel>
-                            <TextBlock Text="Images" FontSize="16" FontWeight="Bold" Margin="0 0 0 10"/>
+                            <TextBlock Text="Фотографии" FontSize="16" FontWeight="Bold" Margin="0 0 0 10"/>
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -160,8 +160,8 @@
                                 </Border>
 
                                 <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10 0 0 0">
-                                    <Button Content="Add Image" Command="{Binding AddImageCommand}" Width="120"/>
-                                    <Button Content="Remove Image" Command="{Binding RemoveImageCommand}" Width="120"/>
+                                    <Button Content="Добавить картинку" Command="{Binding AddImageCommand}" Width="120"/>
+                                    <Button Content="Удалить" Command="{Binding RemoveImageCommand}" Width="120"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
@@ -170,16 +170,16 @@
                     <!-- Reviews Section -->
                     <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="10">
                         <StackPanel>
-                            <TextBlock Text="Reviews" FontSize="16" FontWeight="Bold" Margin="0 0 0 10"/>
+                            <TextBlock Text="Отзывы" FontSize="16" FontWeight="Bold" Margin="0 0 0 10"/>
 
                             <Border CornerRadius="3" BorderBrush="#CCE5FF" BorderThickness="1" Padding="2">
                                 <ListView ItemsSource="{Binding SelectedAttraction.Reviews}" Height="200">
                                     <ListView.View>
                                         <GridView>
-                                            <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Author.Username}" Width="120"/>
-                                            <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding Rating}" Width="60"/>
-                                            <GridViewColumn Header="Date" DisplayMemberBinding="{Binding CreatedDate, StringFormat=d}" Width="100"/>
-                                            <GridViewColumn Header="Text" DisplayMemberBinding="{Binding Text}" Width="300"/>
+                                            <GridViewColumn Header="Автор" DisplayMemberBinding="{Binding Author.Username}" Width="120"/>
+                                            <GridViewColumn Header="Рейтинг" DisplayMemberBinding="{Binding Rating}" Width="60"/>
+                                            <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding CreatedDate, StringFormat=d}" Width="100"/>
+                                            <GridViewColumn Header="Текст" DisplayMemberBinding="{Binding Text}" Width="300"/>
                                         </GridView>
                                     </ListView.View>
                                 </ListView>
